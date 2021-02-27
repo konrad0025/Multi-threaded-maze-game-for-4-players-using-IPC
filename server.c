@@ -18,7 +18,7 @@ WINDOW *legend_window;
 #define MAP_X 37
 #define MAP_Y 33
 #define INFO_X 50
-#define INFO_Y 21
+#define INFO_Y 20
 #define DEFOULT 5
 #define O_COIN 1
 #define O_TRESURE 2
@@ -76,7 +76,7 @@ struct data{
 struct data_int{
     struct data *t_data;
     int i;
-    struct coin *co;
+    struct coin *t_coin;
     int *p_i;
 };
 void init_curses_mode()
@@ -116,17 +116,22 @@ void print_info()
     mvwprintw(info_window,++i,2,"Server's PID: %d",getpid());
     mvwprintw(info_window,++i,2,"Campsite X/Y: 19/13 | 20/13",1,1);
     mvwprintw(info_window,++i,2,"Round number: %d",g_round+1);
-
     mvwprintw(info_window,++i,2,"Parameter:   Player1  Player2  Player3  Player4");
-    mvwprintw(info_window,++i,2,"PID         %d     %d     %d     %d",sendData[0]->PID_player,sendData[1]->PID_player,sendData[2]->PID_player,sendData[3]->PID_player);
-    mvwprintw(info_window,++i,2,"Type        %s     %s     %s     %s",sendData[0]->type?"HUMAN":"-",sendData[1]->type?"HUMAN":"-",sendData[2]->type?"HUMAN":"-",sendData[3]->type?"HUMAN":"-");
+    mvwprintw(info_window,++i,2,"PID          %d   ",sendData[0]->PID_player);
+    mvwprintw(info_window,i,24,"%d   ",sendData[1]->PID_player);
+    mvwprintw(info_window,i,33,"%d   ",sendData[2]->PID_player);
+    mvwprintw(info_window,i,42,"%d   ",sendData[3]->PID_player);
+    mvwprintw(info_window,++i,2,"Type         %s",sendData[0]->type?"HUMAN":"-");
+    mvwprintw(info_window,i,24,"%s",sendData[1]->type?"HUMAN":"-");
+    mvwprintw(info_window,i,33,"%s",sendData[2]->type?"HUMAN":"-");
+    mvwprintw(info_window,i,42,"%s",sendData[3]->type?"HUMAN":"-");
     if(sendData[0]->is_online==FALSE)
     {
-        mvwprintw(info_window,++i,2,"Curr X/Y    --/--");
+        mvwprintw(info_window,++i,2,"Curr X/Y     --/--");
     }
     else
     {
-        mvwprintw(info_window,++i,2,"Curr X/Y    %0.2d/%0.2d",players[0].current.y,players[0].current.x);
+        mvwprintw(info_window,++i,2,"Curr X/Y     %0.2d/%0.2d",players[0].current.y,players[0].current.x);
     }
     if((sendData[1])->is_online==FALSE)
     {
@@ -138,29 +143,29 @@ void print_info()
     }
     if((sendData[2])->is_online==FALSE)
     {
-        mvwprintw(info_window,i,30,"    --/--");
+        mvwprintw(info_window,i,29,"    --/--");
     }
     else
     {
-        mvwprintw(info_window,i,30,"    %0.2d/%0.2d",players[2].current.y,players[2].current.x);
+        mvwprintw(info_window,i,29,"    %0.2d/%0.2d",players[2].current.y,players[2].current.x);
     }
     if((sendData[3])->is_online==FALSE)
     {
-        mvwprintw(info_window,i,39,"     --/--");
+        mvwprintw(info_window,i,39,"   --/--");
     }
     else
     {
-        mvwprintw(info_window,i,39,"     %2.d/%2.d",players[3].current.y,players[3].current.x);
+        mvwprintw(info_window,i,39,"   %0.2d/%0.2d",players[3].current.y,players[3].current.x);
     }
 
 
     if(sendData[0]->is_online==FALSE)
     {
-        mvwprintw(info_window,++i,2,"Deaths        -");
+        mvwprintw(info_window,++i,2,"Deaths         -");
     }
     else
     {
-        mvwprintw(info_window,++i,2,"Deaths        %d",players[0].deaths);
+        mvwprintw(info_window,++i,2,"Deaths         %d",players[0].deaths);
     }
     if((sendData[1])->is_online==FALSE)
     {
@@ -172,23 +177,23 @@ void print_info()
     }
     if((sendData[2])->is_online==FALSE)
     {
-        mvwprintw(info_window,i,28,"        -");
+        mvwprintw(info_window,i,28,"       -");
     }
     else
     {
-        mvwprintw(info_window,i,28,"        %d",players[2].deaths);
+        mvwprintw(info_window,i,28,"       %d",players[2].deaths);
     }
     if((sendData[3])->is_online==FALSE)
     {
-        mvwprintw(info_window,i,38,"        -");
+        mvwprintw(info_window,i,38,"      -");
     }
     else
     {
-        mvwprintw(info_window,i,38,"        %d",players[3].deaths);
+        mvwprintw(info_window,i,38,"      %d",players[3].deaths);
     }
     mvwprintw(info_window,++i,2,"Coins");
-    mvwprintw(info_window,++i,2,"   carried   %d        %d         %d        %d    ",players[0].coins_actually_carry,players[1].coins_actually_carry,players[2].coins_actually_carry,players[3].coins_actually_carry);
-    mvwprintw(info_window,++i,2,"   brought   %d        %d         %d        %d    ",players[0].coins_amount_collected,players[1].coins_amount_collected,players[2].coins_amount_collected,players[3].coins_amount_collected);
+    mvwprintw(info_window,++i,2,"   carried   %d        %d        %d        %d    ",players[0].coins_actually_carry,players[1].coins_actually_carry,players[2].coins_actually_carry,players[3].coins_actually_carry);
+    mvwprintw(info_window,++i,2,"   brought   %d        %d        %d        %d    ",players[0].coins_amount_collected,players[1].coins_amount_collected,players[2].coins_amount_collected,players[3].coins_amount_collected);
 
 }
 void print_legend()
@@ -200,6 +205,7 @@ void print_legend()
     mvwprintw(legend_window,++i,2,"1234 - players");
     mvwaddch(legend_window,++i,2,map[0]);
     mvwprintw(legend_window,i,3,"    - wall");
+    mvwprintw(legend_window,++i,2,"*    - beast (will eat you)");
     mvwprintw(legend_window,++i,2,"#    - bushes (slow down)");
     mvwprintw(legend_window,++i,2,"c    - one coin");
     mvwprintw(legend_window,++i,2,"t    - treasure (10 coins)");
@@ -416,7 +422,7 @@ void destroy_curses_mode()
 {
     endwin();
 }
-void move_player(int player_num,int c,struct coin *co)
+void move_player(int player_num,int c,struct coin *t_coin)
 {
         if(players[player_num].is_in_bush==1 || players[player_num].is_in_bush==0)
         {
@@ -485,8 +491,8 @@ void move_player(int player_num,int c,struct coin *co)
                     {
                         if((players[i].current.x==players[player_num].current.x) && (players[i].current.y==players[player_num].current.y))
                         {
-                            kill_player(player_num,co);
-                            kill_player(i,co);
+                            kill_player(player_num,t_coin);
+                            kill_player(i,t_coin);
                         }
                     }
                 }
@@ -700,7 +706,7 @@ void *check_is_player(void *arg)
         if(kill(t_data->PID_player,0)==-1)
         {
 
-            kill_player(t_data_int->i,t_data_int->co);
+            kill_player(t_data_int->i,t_data_int->t_coin);
             sem_post(&((t_data)->wait_player));
             sem_post(&((t_data)->wait_server));
             sem_post(&((t_data)->wait_for_thread_server));
@@ -717,7 +723,7 @@ void *play_player(void* arg)
 {
     int i=((struct data_int*)(arg))->i;
     struct data *ptr=((struct data_int*)(arg))->t_data;
-    struct coin *p_coin=((struct data_int*)(arg))->co;
+    struct coin *p_coin=((struct data_int*)(arg))->t_coin;
     dis:
     sem_wait(&(ptr->wait_for_online));
     while(1)
@@ -870,7 +876,7 @@ int main(){
         a[i].t_data=ptr[i];
         a[i].i=i;
         a[i].p_i=tab;
-        a[i].co=t_coin;
+        a[i].t_coin=t_coin;
     }
     init_players();
     get_coins(t_coin,40,DEFOULT);
