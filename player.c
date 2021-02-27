@@ -58,7 +58,7 @@ void init_curses_mode()
 
     game_window = newwin(GAME_XY,GAME_XY,0,0);
     info_window = newwin(INFO_Y,INFO_X,0,GAME_XY+8);
-    legend_window = newwin(INFO_Y-2,INFO_X,INFO_Y,GAME_XY+8);
+    legend_window = newwin(INFO_Y-1,INFO_X,INFO_Y,GAME_XY+8);
 
 }
 void refresh_windows()
@@ -91,6 +91,7 @@ void print_legend()
     mvwprintw(legend_window,++i,2,"1234 - players");
     mvwaddch(legend_window,++i,2,(' '|A_REVERSE));
     mvwprintw(legend_window,i,3,"    - wall");
+    mvwprintw(legend_window,++i,2,"*    - beast (will eat you)");
     mvwprintw(legend_window,++i,2,"#    - bushes (slow down)");
     mvwprintw(legend_window,++i,2,"c    - one coin");
     mvwprintw(legend_window,++i,2,"t    - treasure (10 coins)");
