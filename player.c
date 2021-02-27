@@ -41,7 +41,7 @@ struct data{
     sem_t wait_for_thread_server;
     sem_t jeszcze_jeden;
     int PID_server;
-    int PID;
+    int PID_player;
     int type;
     sem_t is_online_still;
     bool is_online;
@@ -205,7 +205,7 @@ int main()
     int c;
     int count=0;
     refresh_windows();
-    (ptr[player_id])->PID=getpid();
+    (ptr[player_id])->PID_player=getpid();
     (ptr[player_id])->type=1;
     pthread_t th1;
     pthread_create(&th1,NULL,is_serwer_online,(void*)(ptr[player_id]));

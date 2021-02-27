@@ -66,7 +66,7 @@ struct data{
     sem_t wait_for_thread_server;
     sem_t jeszcze_jeden;
     int PID_server;
-    int PID;
+    int PID_player;
     int type;
     sem_t is_online_still;
     bool is_online;
@@ -118,7 +118,7 @@ void print_info()
     mvwprintw(info_window,++i,2,"Round number: %d",g_round+1);
 
     mvwprintw(info_window,++i,2,"Parameter:   Player1  Player2  Player3  Player4");
-    mvwprintw(info_window,++i,2,"PID         %d     %d     %d     %d",sendData[0]->PID,sendData[1]->PID,sendData[2]->PID,sendData[3]->PID);
+    mvwprintw(info_window,++i,2,"PID         %d     %d     %d     %d",sendData[0]->PID_player,sendData[1]->PID_player,sendData[2]->PID_player,sendData[3]->PID_player);
     mvwprintw(info_window,++i,2,"Type        %s     %s     %s     %s",sendData[0]->type?"HUMAN":"-",sendData[1]->type?"HUMAN":"-",sendData[2]->type?"HUMAN":"-",sendData[3]->type?"HUMAN":"-");
     if(sendData[0]->is_online==FALSE)
     {
@@ -697,7 +697,7 @@ void *check_is_player(void *arg)
     sem_wait(&(t_data->is_online_still));
     while(1)
     {
-        if(kill(t_data->PID,0)==-1)
+        if(kill(t_data->PID_player,0)==-1)
         {
 
             kill_player(t_data_int->i,t_data_int->co);
@@ -848,7 +848,7 @@ int main(){
         sem_init(&(ptr[i])->wait_for_thread_server,1,0);
         sem_init(&(ptr[i])->jeszcze_jeden,1,0);
         sem_init(&(ptr[i])->is_online_still,1,0);
-        (ptr[i])->PID=0;
+        (ptr[i])->PID_player=0;
         (ptr[i])->type=0;
         (ptr[i])->PID_server=getpid();
         (ptr[i])->round=0;
